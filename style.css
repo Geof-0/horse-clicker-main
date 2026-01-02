@@ -64,7 +64,7 @@ h3 {
 
 .box {
     width: 200px;
-    height: 70px;
+    height: auto;
     border: 3px solid rgb(163, 163, 163);
 }
 
@@ -76,6 +76,19 @@ h3 {
     text-align: center;
 }
 
+.upgrade-title {
+    font-size: 20px;
+    font-weight: bold;
+    background-color:rgb(30, 30, 30);
+    border: 1px solid rgb(163, 163, 163)
+}
 
+.upgrade-effect {
+    font-size: 16px;
+}
 
-
+.upgrade-amount-bought {
+    font-size: 20px;
+    background-color:rgb(70, 70, 70);
+    border: 1px solid rgb(163, 163, 163)
+}
