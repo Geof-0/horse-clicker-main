@@ -1,0 +1,81 @@
+
+
+body {
+    background-color: rgb(0, 0, 0);
+    font-family: Arial, sans-serif;
+    color: white;
+
+}
+
+#horse_image {
+    width: 900px;
+    height: auto;
+}
+
+h3 {
+    font-size: 32px;
+}
+
+
+
+
+
+
+#static_upgrades_container {
+    position: absolute;
+    top: 120px;
+    left: 1000px;
+    width: 250px;
+    height: 700px;
+}
+
+#multi_buy_upgrades_container {
+    position: absolute;
+    top: 120px;
+    left: 1300px;
+    width: 250px;
+    height: 700px;
+}
+
+
+
+#tophat_image {
+    position: absolute;
+    top: 120px;  /* move up */
+    left: 600px;  /* move right/left */
+    width: 210px; /* scale */
+    height: auto;
+    display: none;
+}
+
+#monocle_image {
+    position: absolute;
+    top: 265px;  /* move up */
+    left: 675px;  /* move right/left */
+    width: 50px; /* scale */
+    height: auto;
+    display: none;
+}
+
+
+
+
+
+
+.box {
+    width: 200px;
+    height: 70px;
+    border: 3px solid rgb(163, 163, 163);
+}
+
+.upgrade {
+    background-color: rgb(50, 50, 50);
+    margin: 10px;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+
+
+
