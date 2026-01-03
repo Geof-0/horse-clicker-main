@@ -118,6 +118,8 @@ hat_upgrade.element.addEventListener('click', () => {
         horse_clicks -= hat_upgrade.cost;
         horse_click_gain += 1;
 
+        update_click_gain()
+
         change_txt("number_counter", "Horse clicks: " + Math.round(horse_clicks).toString());
         hat_upgrade.element.style.textDecoration = "line-through";
         hat_upgrade.element.style.backgroundColor = "rgba(131, 246, 129, 1)";
@@ -152,6 +154,8 @@ monocle_upgrade.element.addEventListener('click', () => {
         horse_clicks -= monocle_upgrade.cost;
         horse_click_gain += 2;
 
+        update_click_gain()
+
         change_txt("number_counter", "Horse clicks: " + Math.round(horse_clicks).toString());
         monocle_upgrade.element.style.textDecoration = "line-through";
         monocle_upgrade.element.style.backgroundColor = "rgba(131, 246, 129, 1)";
@@ -173,6 +177,37 @@ monocle_upgrade.element.addEventListener('click', () => {
     }
 });
 
+// midas touch upgrade
+
+const midas_touch_upgrade = new Upgrade("Midas touch", 1000, "signifigantly increase click gain rate. (click_gain^1.3)" );
+
+midas_touch_upgrade.element.addEventListener('click', () => {
+    if (midas_touch_upgrade.try_to_buy(horse_clicks)){
+        const purchased_sound = new Audio("sounds/purchased.mp3")
+
+        horse_clicks -= midas_touch_upgrade.cost;
+
+        update_click_gain()
+
+        change_txt("number_counter", "Horse clicks: " + Math.round(horse_clicks).toString());
+        midas_touch_upgrade.element.style.textDecoration = "line-through"
+        midas_touch_upgrade.element.style.backgroundColor = "rgba(131, 246, 129, 1)";
+        purchased_sound.play()
+
+    } else {
+        if (midas_touch_upgrade.purchased_by_user) {
+            return;
+        }
+
+        midas_touch_upgrade.element.style.backgroundColor = "rgba(243, 61, 61, 1)";
+        const deny_click = new Audio("sounds/deny_click.mp3")
+        deny_click.play()
+
+        wait(500).then(() => {
+            midas_touch_upgrade.element.style.backgroundColor = "rgb(50, 50, 50)";
+        });
+    }
+});
 
 
 
@@ -237,6 +272,10 @@ class Multi_buy_upgrade{
                 purchased_sound.play()
 
                 console.log("successfully modified stats of " + this.name + ". cost: " + this.cost.toString() + ". when_bought_multiplier: " + this.when_bought_multiplier)
+                
+                // update stats
+                update_click_gain()
+                update_automatic_clicks()
 
                 wait(500).then(() => {
                     this.element.style.backgroundColor = "rgb(50, 50, 50)";
@@ -271,8 +310,14 @@ class Multi_buy_upgrade{
 
 // upgrades go here
 
+
+// upgrades for click gain
 const bigger_cursor = new Multi_buy_upgrade('Bigger cursor', 10, '+1 horse click gain', 1.2)
-const clicker = new Multi_buy_upgrade("Clicker", 5, "invisible cursor to click your horse", 1.3)
+const better_mouse = new Multi_buy_upgrade('Better mouse', 50, '+1 horse click gain multiplier (multiplies gain)', 2)
+
+// upgrades for CPS (automatic click gain)
+const clicker = new Multi_buy_upgrade("Clicker", 5, "invisible cursor to click your horse (+1 cps)", 1.3)
+const better_clickers = new Multi_buy_upgrade("Better clickers", 200, "improvements in quality lead to better clickers (+1 clicker multiplier)", 2)
 
 
 
@@ -305,6 +350,32 @@ function update_click_gain() {
 
     // bigger cursor upgrade
     horse_click_gain += bigger_cursor.amount_purchased
+    
+    
+    
+    
+    
+    
+    
+    
+    // multiplier section (MUST ABSOLUTELY BE AT END)
+    // better mouse upgrade
+    horse_click_gain *= (better_mouse.amount_purchased + 1)
+
+
+    
+
+
+    // exponent section (subsection of multiplier section, goes at end too)
+    // midas touch upgrade
+    if (midas_touch_upgrade.purchased_by_user) {
+        horse_click_gain **= 1.3
+    }
+
+
+
+    // update visuals
+    change_txt("click_gain_counter", "Click gain: " + Math.round(horse_click_gain).toString())
 }
 
 
@@ -313,7 +384,10 @@ function update_automatic_clicks() {
     horse_automatic_click_gain = 0
 
     // clicker upgrade
-    horse_automatic_click_gain += clicker.amount_purchased
+    horse_automatic_click_gain += clicker.amount_purchased * (better_clickers.amount_purchased + 1)
+
+    // update visuals
+    change_txt("auto_click_gain_counter", "CPS: " + Math.round(horse_automatic_click_gain).toString())
 }
 
 
@@ -325,14 +399,9 @@ function update_automatic_clicks() {
 async function automatic_horse_clicks_increase() {
     while (true){
         let horse_clicks_before = horse_clicks
-        if (horse_automatic_click_gain < 50){
-            // lower bound animation (under 50 increase)
-            await horse_clicks_animation(horse_clicks + horse_automatic_click_gain, 500)
-            await wait(500)
-        } else {
-            // upper bound animation (equal or over 50 increase)
-            await horse_clicks_animation(horse_clicks + horse_automatic_click_gain, 1000)
-        }
+        await horse_clicks_animation(horse_clicks + horse_automatic_click_gain, 1000)
+
+        
         console.log(horse_clicks_before + "  =>  " + horse_clicks + "  due to automatic click gain")
 
         console.log("updating stats ['horse click gain','automatic horse click gain']")
@@ -363,6 +432,5 @@ async function horse_clicks_animation(new_value, wait_time_in_ms){
 automatic_horse_clicks_increase();
 
 
-// for some reason this makes it so that the horse clicks value gets set to 0. why is this?
 
 

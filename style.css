@@ -38,6 +38,33 @@ h3 {
 }
 
 
+#click_gain_counter {
+    font-size: 40px;
+    font-weight: bold;
+    width: auto;
+    background-color: rgb(50, 50, 50);
+
+    /* position */
+    position: absolute;
+    top: 20;
+    left: 670;
+
+}
+
+#auto_click_gain_counter {
+    font-size: 40px;
+    font-weight: bold;
+    width: auto;
+    background-color: rgb(50, 50, 50);
+
+    /* position */
+    position: absolute;
+    top: 80;
+    left: 670;
+
+}
+
+
 
 #tophat_image {
     position: absolute;
