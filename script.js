@@ -317,8 +317,8 @@ const better_mouse = new Multi_buy_upgrade('Better mouse', 50, '+1 horse click g
 
 // upgrades for CPS (automatic click gain)
 const clicker = new Multi_buy_upgrade("Clicker", 5, "invisible cursor to click your horse (+1 cps)", 1.3)
-const better_clickers = new Multi_buy_upgrade("Better clickers", 200, "improvements in quality lead to better clickers (+1 clicker multiplier)", 2)
-
+const better_clickers = new Multi_buy_upgrade("Better clickers", 200, "improvements in quality lead to better clickers (+1 clicker CPS multiplier)", 2)
+const workers = new Multi_buy_upgrade("Workers", 200, "invisible workers to click your horse (+5 cps)", 1.3)
 
 
 
@@ -383,8 +383,11 @@ function update_automatic_clicks() {
     // reset to 0
     horse_automatic_click_gain = 0
 
-    // clicker upgrade
+    // clicker upgrade (and better clickers)
     horse_automatic_click_gain += clicker.amount_purchased * (better_clickers.amount_purchased + 1)
+
+    // worker upgrade
+    horse_automatic_click_gain += workers.amount_purchased * 5
 
     // update visuals
     change_txt("auto_click_gain_counter", "CPS: " + Math.round(horse_automatic_click_gain).toString())
